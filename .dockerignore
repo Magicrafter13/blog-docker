@@ -6,6 +6,9 @@
 /README.md
 /docker-compose.yml
 
+# GitLab
+/.gitlab-ci.yml
+
 # Possible user shenanigans
 /blog/.env
 
