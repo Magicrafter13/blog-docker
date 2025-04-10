@@ -32,3 +32,5 @@ docker-build:
     - if: $CI_COMMIT_BRANCH
       exists:
         - Dockerfile
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
