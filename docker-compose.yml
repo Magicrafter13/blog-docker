@@ -1,0 +1,38 @@
+services:
+  blog:
+    image: blog-docker
+    ports:
+      - "8080:80"  # Expose port 8080 for your app
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_USER=blog
+      - MYSQL_PASSWORD=blog
+      - MYSQL_DATABASE=blog
+    volumes:
+      - ./static:/app/blog/static
+    depends_on:
+      db:
+        condition: service_healthy
+    command: uwsgi --http :80 --wsgi-file ./app.py --need-app
+
+  db:
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword  # Set the root password for the MariaDB container
+      MYSQL_USER: blog
+      MYSQL_PASSWORD: blog
+      MYSQL_DATABASE: blog
+    volumes:
+      - db_data:/var/lib/mysql
+    #ports:
+    #  - "3306:3306"  # Expose port 3306 for database access (optional)
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "--host=127.0.0.1", "--user=root", "--password=rootpassword"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 5s
+
+volumes:
+  db_data:
+    driver: local

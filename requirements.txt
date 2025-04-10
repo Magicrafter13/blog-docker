@@ -1,0 +1,6 @@
+uwsgi
+Markdown
+mysqlclient
+dotenv
+Flask
+pillow

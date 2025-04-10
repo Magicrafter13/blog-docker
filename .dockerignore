@@ -1,0 +1,13 @@
+# Git
+/.git/
+/.gitmodules
+
+# Repository stuff
+/README.md
+/docker-compose.yml
+
+# Possible user shenanigans
+/blog/.env
+
+# Stuff created during build/run
+/static/
