@@ -4,3 +4,5 @@ mysqlclient
 dotenv
 Flask
 pillow
+python-frontmatter
+GitPython

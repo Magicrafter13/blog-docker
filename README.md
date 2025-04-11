@@ -70,3 +70,6 @@ server (MySQL, MariaDB)
 downloaded here - additionally this is where images for each blog post go
 ### Ports
 uWSGI runs on port 80 in the container.
+
+# Misc
+Docker image from https://binfalse.de/

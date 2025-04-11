@@ -9,8 +9,16 @@
 # GitLab
 /.gitlab-ci.yml
 
-# Possible user shenanigans
+# User and git shenanigans
 /blog/.env
+/blog/.git/
+/blog/.gitignore
+/blog/README.md
+/blog-posts/.env
+/blog-posts/.git/
+/blog-posts/.gitignore
+/blog-posts/posts/
+/blog-posts/README.md
 
-# Stuff created during build/run
+# Stuff created during compose up
 /static/

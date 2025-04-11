@@ -1,3 +1,6 @@
 [submodule "blog"]
 	path = blog
 	url = https://gitlab.matthewrease.net/matthew/blog
+[submodule "blog-posts"]
+	path = blog-posts
+	url = https://gitlab.matthewrease.net/matthew/blog-posts

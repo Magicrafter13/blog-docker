@@ -1,6 +1,7 @@
 services:
   blog:
-    image: blog-docker
+    build: .
+    #image: registry.gitlab.matthewrease.net/matthew/blog-docker:latest
     ports:
       - "8080:80"  # Expose port 8080 for your app
     environment:
@@ -8,12 +9,13 @@ services:
       - MYSQL_USER=blog
       - MYSQL_PASSWORD=blog
       - MYSQL_DATABASE=blog
-    volumes:
-      - ./static:/app/blog/static
+      - REBUILD_DB=true # clears database on every run
+    #volumes:
+    #  - posts:/app/posts
+    #  - images:/app/blog/images
     depends_on:
       db:
         condition: service_healthy
-    command: uwsgi --http :80 --wsgi-file ./app.py --need-app
 
   db:
     image: mariadb:latest
