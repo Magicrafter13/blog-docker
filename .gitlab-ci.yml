@@ -12,8 +12,8 @@ docker-build:
   stage: build
   variables:
     DOCKER_IMAGE_NAME: $CI_PROJECT_NAME:$CI_COMMIT_REF_SLUG
-    DOCKER_HOST: unix:///var/run/docker.sock
-    #DOCKER_HOST: "tcp://docker:2375"
+    #DOCKER_HOST: unix:///var/run/docker.sock
+    DOCKER_HOST: "tcp://docker:2375"
   services:
     - docker:dind
   before_script:
