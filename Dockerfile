@@ -15,12 +15,8 @@ WORKDIR /app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
-RUN mkdir -p /app/blog/static
-
-WORKDIR blog
 
 ENV MYSQL_HOST=127.0.0.1
 ENV USE_CSP=false
 
-CMD sh update
-CMD uwsgi --http :80 --wsgi-file ./app.py --need-app
+CMD ["./entrypoint.sh"]
