@@ -16,7 +16,10 @@ docker-build:
   stage: build
   variables:
     DOCKER_IMAGE_NAME: $CI_PROJECT_NAME:$CI_COMMIT_REF_SLUG
-    DOCKER_HOST: unix:///var/run/docker.sock
+    #DOCKER_HOST: unix:///var/run/docker.sock
+    DOCKER_HOST: "tcp://docker:2375"
+  before_script:
+    - git submodule update --init
   # All branches are tagged with $DOCKER_IMAGE_NAME (defaults to commit ref slug)
   # Default branch is also tagged with `latest`
   script:
