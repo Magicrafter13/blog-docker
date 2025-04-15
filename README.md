@@ -79,6 +79,7 @@ run the updater (see
 ### Volume Locations
 - `/app/posts`: this is where each .md post file goes
 - `/app/blog/images`: this is where images for each blog post go
+- `/app/blog/static/icon.webp`: use this path to replace the default favicon
 #### Additional Information/Considerations
 1. Post filenames should consist of numbers only. They can technically be in any
 format, but the recommended format is `YYYYmmddHHMM.md`, or sequential IDs:

@@ -5,20 +5,19 @@
 # Repository stuff
 /README.md
 /docker-compose.yml
+/Dockerfile
 
 # GitLab
 /.gitlab-ci.yml
 
 # User and git shenanigans
-/blog/.env
 /blog/.git/
 /blog/.gitignore
 /blog/README.md
-/blog-posts/.env
+/blog/.env
+/blog/static/images
 /blog-posts/.git/
 /blog-posts/.gitignore
 /blog-posts/posts/
 /blog-posts/README.md
-
-# Stuff created during compose up
-/static/
+/blog-posts/.env

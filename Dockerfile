@@ -16,34 +16,27 @@ WORKDIR /app
 
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
-RUN rm requirements.txt
 
-COPY entrypoint.sh ./
-COPY blog ./blog
-COPY bin ./bin
-
-COPY patch.py ./
-
-COPY 202504011200.* ./
-COPY blog-posts/update_db ./
-
-# Patch Flask app to support /images/ since we don't want /static/ to be mounted by the user.
-
-RUN mv blog/app.py app.py
-RUN cat app.py patch.py > blog/app.py
-RUN rm app.py patch.py
+COPY . .
+ADD https://www.nerdfonts.com/assets/css/webfont.css ./blog/static/nerdfont.css
+ADD https://www.nerdfonts.com/assets/fonts/Symbols-2048-em%20Nerd%20Font%20Complete.woff2 ./blog/static/nerdfont.woff2
+RUN sed -i 's#\.\./fonts/Symbols-2048-em Nerd Font Complete.woff2#/static/nerdfont.woff2#' ./blog/static/nerdfont.css
 
 # Default post for new user
 
-RUN mkdir -p posts blog/images
+RUN mkdir -p posts blog/static/images
 RUN mv 202504011200.md posts/
-RUN mv 202504011200.webp blog/images
+RUN mv 202504011200.webp blog/static/images
 
 # Runtime
 
 ENV PATH="/app/bin:$PATH"
+
+ENV PYTHONDONTWRITEBYTECODE=1
+
 ENV MYSQL_HOST=127.0.0.1
 ENV USE_CSP=false
 ENV REBUILD_DB=true
+ENV UPDATE_DB=always
 
-CMD ["./entrypoint.sh"]
+CMD ["entrypoint.sh"]

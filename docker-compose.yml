@@ -6,14 +6,16 @@ services:
       - "8080:80"  # Expose port 8080 for your app
     environment:
       - MYSQL_HOST=db
-      - MYSQL_USER=blog
-      - MYSQL_PASSWORD=blog
-      - MYSQL_DATABASE=blog
-      - REBUILD_DB=true     # clears database on every run
-      - UPDATE_DB=always    # set to manual if you wish to run `update db` yourself
+      #- MYSQL_USER=blog
+      #- MYSQL_PASSWORD=blog
+      #- MYSQL_DATABASE=blog
+      - USE_CSP=false     # Content Security Policy headers
+      - REBUILD_DB=true   # clears database on every run
+      - UPDATE_DB=always  # set to manual if you wish to run `update db` yourself
     #volumes:
     #  - blog_posts:/app/posts
-    #  - blog_images:/app/blog/images
+    #  - blog_images:/app/blog/static/images
+    #  - /path/to/icon:/app/blog/static/icon.webp
     depends_on:
       db:
         condition: service_healthy

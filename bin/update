@@ -12,10 +12,10 @@ case $1 in
 		if [ "$REBUILD_DB" = true ]
 		then
 			echo FLUSHING DATABASE
-			python3 ./update_db reset
+			python3 blog-posts/update_db reset
 		else
 			echo Applying git diff to database
-			python3 ./update_db
+			python3 blog-posts/update_db
 		fi
 		;;
 	*)
