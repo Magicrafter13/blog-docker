@@ -93,6 +93,10 @@ and untouched. This is good for slightly reducing disk I/O, however if the
 database itself is not saved between image runs (for example, you're using the
 docker compose method without a volume), then this is pointless and will not
 produce the desired results.
+4. If you do not want the Docker image to touch your database at all (as in,
+modifying data), set `REBUILD_DB` to false, and don't volume mount `/app/posts`
+at all. This should effectively prevent any attempts at modifying data (you can
+also just disable write related permissions on the database).
 ### Ports
 uWSGI runs on port 80 in the container.
 
