@@ -1,0 +1,23 @@
+#!/usr/bin/sh
+
+case $1 in
+	static)
+		echo '\e[33mUpdating resources\e[0m'
+		cd /app/blog
+		sh ./update
+		;;
+	db|database|posts)
+		echo '\e[33mUpdating post database\e[0m'
+		cd /app
+		if [ "$REBUILD_DB" = true ]
+		then
+			echo FLUSHING DATABASE
+			python3 ./update_db reset
+		else
+			echo Applying git diff to database
+			python3 ./update_db
+		fi
+		;;
+	*)
+		echo "\e[31m$0: unknown argument: $1\e[0m"
+esac

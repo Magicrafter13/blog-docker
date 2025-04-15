@@ -20,6 +20,7 @@ RUN rm requirements.txt
 
 COPY entrypoint.sh ./
 COPY blog ./blog
+COPY bin ./bin
 
 COPY patch.py ./
 
@@ -40,6 +41,7 @@ RUN mv 202504011200.webp blog/images
 
 # Runtime
 
+ENV PATH="/app/bin:$PATH"
 ENV MYSQL_HOST=127.0.0.1
 ENV USE_CSP=false
 ENV REBUILD_DB=true

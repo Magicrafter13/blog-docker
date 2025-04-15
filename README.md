@@ -71,6 +71,11 @@ server (MySQL, MariaDB)
 - **MYSQL_DATABASE**: defaults to `blog` - name of database
 - **REBUILD_DB**: defaults to `true` - when true, drops all tables in the
 database and recreates it when the image is run
+- **UPDATE_DB**: defaults to `always` - when set to `always`, the database will
+be wiped when the container is started, and then populated with all of your
+posts - when set to anything else, the database will only be changed when you
+run the updater (see
+[Interacting with the Container](#interacting-with-the-container))
 ### Volume Locations
 - `/app/posts`: this is where each .md post file goes
 - `/app/blog/images`: this is where images for each blog post go
@@ -99,6 +104,12 @@ at all. This should effectively prevent any attempts at modifying data (you can
 also just disable write related permissions on the database).
 ### Ports
 uWSGI runs on port 80 in the container.
+## Interacting with the Container
+There is an `update` utility included in the container's PATH. It can be used to
+download newer assets, as well as update the post database. Examples:
+- to update the assets, you can run `docker exec blog-docker update static`
+- to update the database, you can run `docker exec blog-docker update db` - this
+function is affected by the value of `REBUILD_DB`
 
 # Misc
 Docker image from https://binfalse.de/

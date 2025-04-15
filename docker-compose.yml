@@ -9,10 +9,11 @@ services:
       - MYSQL_USER=blog
       - MYSQL_PASSWORD=blog
       - MYSQL_DATABASE=blog
-      - REBUILD_DB=true # clears database on every run
+      - REBUILD_DB=true     # clears database on every run
+      - UPDATE_DB=always    # set to manual if you wish to run `update db` yourself
     #volumes:
-    #  - posts:/app/posts
-    #  - images:/app/blog/images
+    #  - blog_posts:/app/posts
+    #  - blog_images:/app/blog/images
     depends_on:
       db:
         condition: service_healthy

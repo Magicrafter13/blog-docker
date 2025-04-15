@@ -1,12 +1,15 @@
 #!/usr/bin/sh
 
-if [ "$REBUILD_DB" = "true" ]
+cd blog
+
+if [ ! -f static/nerdfont.css ] || [ ! -f static/nerdfont.woff2 ]
 then
-	echo FLUSHING DATABASE
-	python3 update_db reset
+	update static
 fi
 
-cd blog
-sh update
+if [ "$UPDATE_DB" = always ]
+then
+	update db
+fi
 
 uwsgi --logto ./uwsgi.log --http :80 --wsgi-file ./app.py --need-app
