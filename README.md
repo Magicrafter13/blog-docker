@@ -41,7 +41,8 @@ docker build -t blog-docker .
 ## Raw with Docker
 ```bash
 docker run \
-    -v blog-static:/app/blog/static \ # this is where post images go\
+    -v blog-posts:/app/posts        \ # this is where the Markdown(+YAML) files go
+    -v blog-static:/app/blog/images \ # this is where post images go
     -e MYSQL_HOST=localhost         \ # you can leave this out if the database is running inside the
                                     \ # same container, such as with the docker-compose
     -e MYSQL_USER=blog              \ # The next 3 values are default and also not needed
@@ -56,6 +57,9 @@ Modify the `docker-compose.yml` file to suit your needs, paying special
 attention to ports, volumes, and environment variables. Additionally, the
 compose file will try to pull a MariaDB image and set it up for you. Remove this
 if you wish to provide your own.
+
+By default it binds on port 8080, and creates/uses a Docker volume called
+`db_data` for the MariaDB database.
 ## General Information
 If you're running something like Podman, or some other such solution, the above
 information should contain all you need, but to summarize:
@@ -65,9 +69,30 @@ server (MySQL, MariaDB)
 - **MYSQL_USER**: defaults to `blog` - username for authentication
 - **MYSQL_PASSWORD**: defaults to `blog` - password for authentication
 - **MYSQL_DATABASE**: defaults to `blog` - name of database
-### Volumes
-- `/app/blog/static`: some assets are not shipped with the image, and are
-downloaded here - additionally this is where images for each blog post go
+- **REBUILD_DB**: defaults to `true` - when true, drops all tables in the
+database and recreates it when the image is run
+### Volume Locations
+- `/app/posts`: this is where each .md post file goes
+- `/app/blog/images`: this is where images for each blog post go
+#### Additional Information/Considerations
+1. Post filenames should consist of numbers only. They can technically be in any
+format, but the recommended format is `YYYYmmddHHMM.md`, or sequential IDs:
+`0.md`, `1.md`, etc.
+2. Image filenames must match their `.md` counterparts, and end with `.webp`.
+The images don't technically have to be webp, aside from the fact that all the
+metadata on the webpages will indicate they are webp files.
+3. If you store your posts in a `.git` repo (that the container can see), and
+set `REBUILD_DB` to `false`, then the database will be updated on each image
+run, based on the changes in the most recent git commit. For example, if the
+last commit received has a file being edited, the existing post (assuming you
+didn't change the filename) will be deleted, and re-added with the updated
+content - if the commit has a file which has been deleted, the post will be
+deleted from the database - and if the commit has a new file, that post will be
+added to the database. Any post/file not involved in the commit will be ignored
+and untouched. This is good for slightly reducing disk I/O, however if the
+database itself is not saved between image runs (for example, you're using the
+docker compose method without a volume), then this is pointless and will not
+produce the desired results.
 ### Ports
 uWSGI runs on port 80 in the container.
 
