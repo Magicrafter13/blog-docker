@@ -54,9 +54,9 @@ docker run \
 Make sure you've built the image first.
 
 Modify the `docker-compose.yml` file to suit your needs, paying special
-attention to ports, volumes, and environment variables. Additionally, the
-compose file will try to pull a MariaDB image and set it up for you. Remove this
-if you wish to provide your own.
+attention to ports, [volumes](#volume-locations), and environment variables.
+Additionally, the compose file will try to pull a MariaDB image and set it up
+for you. Remove this if you wish to provide your own.
 
 By default it binds on port 8080, and creates/uses a Docker volume called
 `db_data` for the MariaDB database.
@@ -79,7 +79,13 @@ run the updater (see
 ### Volume Locations
 - `/app/posts`: this is where each .md post file goes
 - `/app/blog/images`: this is where images for each blog post go
+- `/app/blog/uwsgi.log`: the log of the web server - optional mount but highly
+recommended as it allows you to keep track of visited pages (for the Popular
+Posts sidebar, which doesn't rely on a database)
 - `/app/blog/static/icon.webp`: use this path to replace the default favicon
+- `/app/blog/config.py`: copy
+[the official config](https://gitlab.matthewrease.net/matthew/blog/-/raw/master/config.py)
+and update it to match your desired branding
 #### Additional Information/Considerations
 1. Post filenames should consist of numbers only. They can technically be in any
 format, but the recommended format is `YYYYmmddHHMM.md`, or sequential IDs:

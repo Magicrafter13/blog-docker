@@ -2,12 +2,13 @@
 /.git/
 /.gitmodules
 
-# Repository stuff
-/README.md
+# Docker stuff
 /docker-compose.yml
 /Dockerfile
+/.dockerignore
 
 # GitLab
+/README.md
 /.gitlab-ci.yml
 
 # User and git shenanigans

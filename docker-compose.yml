@@ -9,13 +9,16 @@ services:
       #- MYSQL_USER=blog
       #- MYSQL_PASSWORD=blog
       #- MYSQL_DATABASE=blog
-      - USE_CSP=false     # Content Security Policy headers
-      - REBUILD_DB=true   # clears database on every run
-      - UPDATE_DB=always  # set to manual if you wish to run `update db` yourself
+      - USE_CSP=false                 # Content Security Policy headers
+      - REBUILD_DB=true               # clears database on every run
+      - UPDATE_DB=always              # set to manual if you wish to run `update db` yourself
+      - PRIMARY_AUTHOR=Matthew Rease  # make sure this value matches what you set in /app/blog/config.py
     #volumes:
-    #  - blog_posts:/app/posts
-    #  - blog_images:/app/blog/static/images
-    #  - /path/to/icon:/app/blog/static/icon.webp
+    #  - blog_posts:/app/posts:ro
+    #  - blog_images:/app/blog/static/images:ro
+    #  - /path/to/log:/app/blog/uwsgi.log
+    #  - /path/to/icon:/app/blog/static/icon.webp:ro
+    #  - /path/to/config:/app/blog/config.py:ro  # make sure file exists
     depends_on:
       db:
         condition: service_healthy
@@ -29,8 +32,6 @@ services:
       MYSQL_DATABASE: blog
     volumes:
       - db_data:/var/lib/mysql
-    #ports:
-    #  - "3306:3306"  # Expose port 3306 for database access (optional)
     healthcheck:
       test: ["CMD", "mariadb-admin", "ping", "--host=127.0.0.1", "--user=root", "--password=rootpassword"]
       interval: 10s
