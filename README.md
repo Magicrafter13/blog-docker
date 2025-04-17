@@ -41,11 +41,14 @@ docker build -t blog-docker .
 ## Raw with Docker
 ```bash
 docker run \
-    -v blog-posts:/app/posts        \ # this is where the Markdown(+YAML) files go
-    -v blog-static:/app/blog/images \ # this is where post images go
-    -e MYSQL_HOST=localhost         \ # you can leave this out if the database is running inside the
-                                    \ # same container, such as with the docker-compose
-    -e MYSQL_USER=blog              \ # The next 3 values are default and also not needed
+    -v blog-posts:/app/posts                    \ # Markdown(+YAML) post files
+    -v blog-static:/app/blog/static/images      \ # post images go
+    -v /path/to/log:/app/blog/uwsgi.log         \ # log file, used for "Popular Posts"
+    -v /path/to/icon:/app/blog/static/icon.webp \ # site favicon
+    -v /path/to/config.py:/app/blog/config.py   \ # site branding/identity
+    -e MYSQL_HOST=localhost                     \ # db host (if not inside the same service/pod)
+    -e MYSQL_USER=blog                          \ # these 3 values only needed if they aren't the
+                                                \ # defaults ('blog')
     -e MYSQL_PASSWORD=blog \
     -e MYSQL_DATABASE=blog \
     blog-docker
@@ -78,7 +81,7 @@ run the updater (see
 [Interacting with the Container](#interacting-with-the-container))
 ### Volume Locations
 - `/app/posts`: this is where each .md post file goes
-- `/app/blog/images`: this is where images for each blog post go
+- `/app/blog/static/images`: this is where images for each blog post go
 - `/app/blog/uwsgi.log`: the log of the web server - optional mount but highly
 recommended as it allows you to keep track of visited pages (for the Popular
 Posts sidebar, which doesn't rely on a database)
@@ -114,7 +117,10 @@ uWSGI runs on port 80 in the container.
 ## Interacting with the Container
 There is an `update` utility included in the container's PATH. It can be used to
 download newer assets, as well as update the post database. Examples:
-- to update the assets, you can run `docker exec blog-docker update static`
+- to update the assets, you can run `docker exec blog-docker update static` -
+these updates will be lost when stopping the container, unless you bind mount
+them (see the script at /app/blog/update for details on what files are
+downloaded)
 - to update the database, you can run `docker exec blog-docker update db` - this
 function is affected by the value of `REBUILD_DB`
 

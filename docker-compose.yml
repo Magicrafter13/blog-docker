@@ -10,7 +10,7 @@ services:
       #- MYSQL_PASSWORD=blog
       #- MYSQL_DATABASE=blog
       - USE_CSP=false                 # Content Security Policy headers
-      - REBUILD_DB=true               # clears database on every run
+      - REBUILD_DB=true               # clears database when `update db` is run
       - UPDATE_DB=always              # set to manual if you wish to run `update db` yourself
       - PRIMARY_AUTHOR=Matthew Rease  # make sure this value matches what you set in /app/blog/config.py
     #volumes:
