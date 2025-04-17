@@ -51,6 +51,9 @@ docker run \
                                                 \ # defaults ('blog')
     -e MYSQL_PASSWORD=blog \
     -e MYSQL_DATABASE=blog \
+    -e USE_CSP=false \
+    -e REBUILD_DB=true \
+    -e UPDATE_DB=always \
     blog-docker
 ```
 ## Docker Compose
@@ -72,6 +75,8 @@ server (MySQL, MariaDB)
 - **MYSQL_USER**: defaults to `blog` - username for authentication
 - **MYSQL_PASSWORD**: defaults to `blog` - password for authentication
 - **MYSQL_DATABASE**: defaults to `blog` - name of database
+- **USE_CSP**: defaults to `false` - enables Content Security Policy data inside
+the HTML response
 - **REBUILD_DB**: defaults to `true` - when true, drops all tables in the
 database and recreates it when the image is run
 - **UPDATE_DB**: defaults to `always` - when set to `always`, the database will
