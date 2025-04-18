@@ -118,7 +118,7 @@ modifying data), set `REBUILD_DB` to false, and don't volume mount `/app/posts`
 at all. This should effectively prevent any attempts at modifying data (you can
 also just disable write related permissions on the database).
 ### Ports
-uWSGI runs on port 80 in the container.
+uWSGI runs on port 8080 in the container.
 ## Interacting with the Container
 There is an `update` utility included in the container's PATH. It can be used to
 download newer assets, as well as update the post database. Examples:

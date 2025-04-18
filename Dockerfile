@@ -2,7 +2,7 @@
 
 FROM python:3
 
-EXPOSE 80
+EXPOSE 8080
 
 LABEL org.opencontainers.image.title="W3CSS Flask Blog"
 LABEL org.opencontainers.image.description="Python uWSGI web app with SQL backend"

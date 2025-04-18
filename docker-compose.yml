@@ -3,7 +3,7 @@ services:
     build: .
     #image: registry.gitlab.matthewrease.net/matthew/blog-docker:latest
     ports:
-      - "8080:80"  # Expose port 8080 for your app
+      - "8080:8080"  # Expose port 8080 for your app
     environment:
       - MYSQL_HOST=db
       #- MYSQL_USER=blog
