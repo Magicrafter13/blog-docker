@@ -10,4 +10,5 @@ then
 	update db
 fi
 
-uwsgi --ini /app/blog.ini
+touch /app/blog/access.log
+uwsgi --ini /app/blog/default.ini --ini /app/blog.ini

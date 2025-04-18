@@ -16,7 +16,7 @@ services:
     #volumes:
     #  - blog_posts:/app/posts:ro
     #  - blog_images:/app/blog/static/images:ro
-    #  - /path/to/log:/app/blog/uwsgi.log
+    #  - /path/to/log:/app/blog/access.log
     #  - /path/to/icon:/app/blog/static/icon.webp:ro
     #  - /path/to/config:/app/blog/config.py:ro  # make sure file exists
     depends_on:

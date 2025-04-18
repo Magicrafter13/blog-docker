@@ -18,10 +18,10 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
-ADD https://www.nerdfonts.com/assets/css/webfont.css ./blog/static/nerdfont.css
-ADD https://www.nerdfonts.com/assets/fonts/Symbols-2048-em%20Nerd%20Font%20Complete.woff2 ./blog/static/nerdfont.woff2
-ADD http://afarkas.github.io/lazysizes/lazysizes.min.js ./blog/static/lazysizes.min.js
-RUN sed -i 's#\.\./fonts/Symbols-2048-em Nerd Font Complete.woff2#/static/nerdfont.woff2#' ./blog/static/nerdfont.css
+ADD https://www.nerdfonts.com/assets/css/webfont.css blog/static/nerdfont.css
+ADD https://www.nerdfonts.com/assets/fonts/Symbols-2048-em%20Nerd%20Font%20Complete.woff2 blog/static/nerdfont.woff2
+ADD http://afarkas.github.io/lazysizes/lazysizes.min.js blog/static/lazysizes.min.js
+RUN sed -i 's#\.\./fonts/Symbols-2048-em Nerd Font Complete.woff2#/static/nerdfont.woff2#' blog/static/nerdfont.css
 
 # Default post for new user
 
@@ -29,7 +29,13 @@ RUN mkdir -p posts blog/static/images
 RUN mv 202504011200.md posts/
 RUN mv 202504011200.webp blog/static/images
 
+# End
+
+RUN chown www-data:www-data -R /app
+
 # Runtime
+
+USER www-data
 
 ENV PATH="/app/bin:$PATH"
 

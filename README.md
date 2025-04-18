@@ -29,8 +29,8 @@ python3 ./update_db reset # the reset argument assures the specified database is
 ```
 
 If using docker-compose, you may skip these steps for now, as by default it
-pulls a MariaDB image for you, and I plan to add a way to import posts from the
-container itself in a future commit.
+pulls a MariaDB image for you, and you can import posts into the container using
+volume mounts. (See [Volume Locations](#volume-locations).)
 
 # Building the Image
 ```sh
@@ -43,7 +43,7 @@ docker build -t blog-docker .
 docker run \
     -v blog-posts:/app/posts                    \ # Markdown(+YAML) post files
     -v blog-static:/app/blog/static/images      \ # post images go
-    -v /path/to/log:/app/blog/uwsgi.log         \ # log file, used for "Popular Posts"
+    -v /path/to/log:/app/blog/access.log        \ # log file, used for "Popular Posts"
     -v /path/to/icon:/app/blog/static/icon.webp \ # site favicon
     -v /path/to/config.py:/app/blog/config.py   \ # site branding/identity
     -e MYSQL_HOST=localhost                     \ # db host (if not inside the same service/pod)
@@ -87,7 +87,7 @@ run the updater (see
 ### Volume Locations
 - `/app/posts`: this is where each .md post file goes
 - `/app/blog/static/images`: this is where images for each blog post go
-- `/app/blog/uwsgi.log`: the log of the web server - optional mount but highly
+- `/app/blog/access.log`: the log of the web server - optional mount but highly
 recommended as it allows you to keep track of visited pages (for the Popular
 Posts sidebar, which doesn't rely on a database)
 - `/app/blog/static/icon.webp`: use this path to replace the default favicon
