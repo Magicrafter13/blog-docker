@@ -60,6 +60,8 @@ tag-images:
     #    - Dockerfile
     #  when: always
     #- when: never
+  tags:
+    - docker
 
 deploy-compressed-thoughts:
   stage: deploy
