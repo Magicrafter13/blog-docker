@@ -12,7 +12,7 @@
 #  - release
 #  - deploy
 
-docker-build:
+docker-build-self:
   stage: build
   image: docker:cli
   variables:
@@ -49,20 +49,40 @@ docker-build:
   tags:
     - docker
 
-#tag-images:
-#  stage: release
-#  image: docker:cli
-#  before_script:
-#    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
-#  script:
-#  rules:
-#    - if: $CI_COMMIT_TAG
-#    #  exists:
-#    #    - Dockerfile
-#    #  when: always
-#    #- when: never
-#  tags:
-#    - docker
+docker-build-gitlab:
+  stage: build
+  image: docker:cli
+  variables:
+    DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+    GIT_SUBMODULE_STRATEGY: recursive
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+  # All branches are tagged with $DOCKER_IMAGE_NAME (defaults to commit ref slug)
+  # Default branch is also tagged with `latest`
+  script:
+    - docker build --pull -t "$DOCKER_IMAGE_NAME" .
+    #- docker push "$DOCKER_IMAGE_NAME"
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
+        docker tag "$DOCKER_IMAGE_NAME" "$CI_REGISTRY_IMAGE:latest"
+        docker push "$CI_REGISTRY_IMAGE:latest"
+      fi
+    - |
+      if [[ -n "$CI_COMMIT_TAG" ]]; then
+        docker tag "$DOCKER_IMAGE_NAME" "$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG"
+        docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG"
+      fi
+  # Run this job in a branch where a Dockerfile exists
+  rules:
+    - if: '$CI_COMMIT_BRANCH && $CI_SERVER_HOST == "gitlab.com"'
+      exists:
+        - Dockerfile
+      when: always
+    - if: '$CI_COMMIT_TAG && $CI_SERVER_HOST == "gitlab.com"'
+      exists:
+        - Dockerfile
+      when: always
+    - when: never
 
 deploy-compressed-thoughts:
   stage: deploy
@@ -76,9 +96,9 @@ deploy-compressed-thoughts:
     - ssh -i "$SSH_PRIVATE_KEY" "$SSH_USER@$SSH_HOST" "deploy $CI_COMMIT_TAG"
   rules:
     # Major (breaking) update
-    - if: '$CI_COMMIT_TAG =~ /^v\d+\.0$/'
+    - if: '$CI_COMMIT_TAG =~ /^v\d+\.0$/ && $CI_SERVER_HOST == "gitlab.matthewrease.net"'
       when: manual
     # Minor update
-    - if: '$CI_COMMIT_TAG =~ /^v\d+\.\d+$/'
+    - if: '$CI_COMMIT_TAG =~ /^v\d+\.\d+$/ && $CI_SERVER_HOST == "gitlab.matthewrease.net"'
       when: always
     - when: never
